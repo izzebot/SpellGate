@@ -51,6 +51,7 @@
         fliteController = [[FliteController alloc] init];
     }
     return fliteController;
+    fliteController.duration_stretch = 1.3;
 }
 
 - (Slt *)slt {
@@ -94,7 +95,7 @@
     
     AVAudioPlayer *pp1 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"happycheering" ofType:@"aiff"]] error:nil];
     self.cheerPlay = pp1;
-    [pp1 setVolume:7.0];
+    [pp1 setVolume:5.0];
     [pp1 prepareToPlay];
     
     [self getRoundTasksForLevel:[self.currLevel intValue]];
@@ -157,12 +158,12 @@
     for (int i = 0; i<([self.currentWord.letters count]); i++){
         
         hint1 = [hint1 stringByAppendingString:[self.currentWord.letters objectAtIndex:i]];
-        hint1 = [hint1 stringByAppendingString:@" "];
+        hint1 = [hint1 stringByAppendingString:@"   "];
     }
-    hint1 = [hint1 stringByAppendingString:@"spells "];
+    hint1 = [hint1 stringByAppendingString:@"spells   "];
     hint1 = [hint1 stringByAppendingString:self.currentWord.theWord];
     
-    NSLog(hint1);
+    //NSLog(hint1);
     
     //Says the W O R D spells word with voice slt
     [self.fliteController say: hint1 withVoice:self.slt];
@@ -273,14 +274,13 @@
     
     if (self.isWordSpelled) {
         //play win sound
-        [self playWinSound];
+        //[self playWinSound];
         self.score += 25/self.timesWrong;
         self.timesWrong = 1;
         [self resetScreen];
         
         //if finished round
         if (self.levelWords.count == self.currentIndex+1) {
-            
             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
             NSData *retrData = [prefs objectForKey:@"levelsAndScores"];
             NSMutableDictionary *levelsAndScores = [NSKeyedUnarchiver unarchiveObjectWithData:retrData];
